@@ -1,10 +1,10 @@
 ## 电商微服务项目
 
-前后端分离项目，此为后端项目地址
+此为后端项目
 
-1. 后台管理前端项目地址 https://github.com/Dlimingliang/shop-admin
-2. 后台管理后端项目地址 https://github.com/Dlimingliang/shop_srvs
-3. 前端项目地址
+1. 后端项目地址 https://github.com/Dlimingliang/shop_srvs
+2. 后台管理前端项目地址 https://github.com/Dlimingliang/shop-admin
+3. 电商前端项目地址
 
 #### 技术选型
 - 使用grpc进行微服务的调用，序列化使用protobuf
