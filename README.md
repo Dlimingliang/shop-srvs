@@ -6,7 +6,12 @@
 2. 后台管理前端项目地址 https://github.com/Dlimingliang/shop-admin
 3. 电商前端项目地址
 
+## 项目配置及文档地址(私有)
+
+https://github.com/Dlimingliang/shop-document
+
 #### 技术选型
+
 - 使用grpc进行微服务的调用，序列化使用protobuf
 - 使用gin框架，并且创建restful风格API
 - API文档 使用swagger构建自动化文档
