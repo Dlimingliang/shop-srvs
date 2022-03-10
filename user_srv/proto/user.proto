@@ -34,7 +34,7 @@ message CreateUserRequest {
 message UpdateUserRequest {
   int32 id = 1;
   string userName = 2;
-  bool gender = 3;
+  string gender = 3;
   uint64 birthday = 4;
 }
 
@@ -53,7 +53,7 @@ message UserResponse {
   string userName = 2;
   string mobile = 3;
   string password = 4;
-  bool gender = 5;
+  string gender = 5;
   uint64 birthday = 6;
   int32 role = 7;
 }

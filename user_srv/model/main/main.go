@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"github.com/Dlimingliang/shop_srvs/user_srv/global"
 	"log"
 	"os"
 	"time"
@@ -26,7 +28,7 @@ func main() {
 	)
 
 	//建立数据库连接
-	dsn := "root:123456!@tcp(127.0.0.1:3306)/shop_user?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := fmt.Sprintf("root:123456!@tcp(%s:3306)/shop_user?charset=utf8mb4&parseTime=True&loc=Local", global.DbIp)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true, //配置单数表名,默认如果struct为User,生成的表为users.配置单数表名生成的表为user

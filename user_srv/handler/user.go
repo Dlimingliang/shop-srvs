@@ -41,11 +41,14 @@ func ModelToUserResponse(user model.User) proto.UserResponse {
 		UserName: user.UserName,
 		Mobile:   user.Mobile,
 		Password: user.Password,
-		//Gender:   false,
+		//Gender:   "",
 		//Birthday: 0,
 		Role: int32(user.Role),
 	}
 
+	if user.Gender != "" {
+		userRs.Gender = user.Gender
+	}
 	if user.Birthday != nil {
 		userRs.Birthday = uint64(user.Birthday.Unix())
 	}
