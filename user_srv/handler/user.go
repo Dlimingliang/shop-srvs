@@ -4,10 +4,14 @@ import (
 	"context"
 	"crypto/sha512"
 	"fmt"
+	"strings"
+	"time"
 
 	"github.com/anaskhan96/go-password-encoder"
+	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"gorm.io/gorm"
 
 	"github.com/Dlimingliang/shop_srvs/user_srv/global"
@@ -36,7 +40,6 @@ func Paginate(page, pageSize int) func(db *gorm.DB) *gorm.DB {
 }
 
 func ModelToUserResponse(user model.User) proto.UserResponse {
-
 	//proto生成的对象是有默认值的,我们不可以随便将数据库查询的东西赋值给proto,如果为nil,那么grpc可能报错
 	//所以我们查询出来的东西，如果是可以为空的，那么我们要进行判断
 	userRs := proto.UserResponse{
@@ -115,7 +118,6 @@ func (us UserServer) GetUserByMobile(ctx context.Context, request *proto.MobileR
 
 func (us UserServer) CreateUser(ctx context.Context, request *proto.CreateUserRequest) (*proto.UserResponse, error) {
 	//新建用户
-	//查询电话是否存在
 	var user model.User
 	result := global.DB.Where(&model.User{Mobile: request.Mobile}).First(&user)
 	if result.Error != nil {
@@ -130,7 +132,6 @@ func (us UserServer) CreateUser(ctx context.Context, request *proto.CreateUserRe
 	options := &password.Options{SaltLen: 16, Iterations: 100, KeyLen: 32, HashFunction: sha512.New}
 	salt, encodedPwd := password.Encode(request.Password, options)
 	user.Password = fmt.Sprintf("%s$%s", salt, encodedPwd)
-
 	result = global.DB.Create(&user)
 	if result.Error != nil {
 		return nil, status.Errorf(codes.Internal, result.Error.Error())
@@ -138,4 +139,36 @@ func (us UserServer) CreateUser(ctx context.Context, request *proto.CreateUserRe
 
 	userRs := ModelToUserResponse(user)
 	return &userRs, nil
+}
+
+func (us UserServer) UpdateUser(ctx context.Context, request *proto.UpdateUserRequest) (*emptypb.Empty, error) {
+	//更新用户
+	var user model.User
+	result := global.DB.First(&user, request.Id)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	if result.RowsAffected == 0 {
+		return nil, status.Errorf(codes.NotFound, "用户不存在")
+	}
+
+	user.UserName = request.UserName
+	user.Gender = request.Gender
+	birthDay := time.Unix(int64(request.Birthday), 0)
+	user.Birthday = &birthDay
+	//会更新所有字段即使是非零的值,因为之前查询了所有字段出来，并且进行更新，所以不会有问题
+	result = global.DB.Save(&user)
+	if result.Error != nil {
+		return nil, status.Errorf(codes.Internal, result.Error.Error())
+	}
+	return &empty.Empty{}, nil
+}
+
+func (us UserServer) CheckPassword(ctx context.Context,
+	request *proto.PasswordCheckRequest) (*proto.PasswordCheckResponse, error) {
+	//校验密码
+	passwords := strings.Split(request.EncryptedPassword, "$")
+	options := &password.Options{SaltLen: 16, Iterations: 100, KeyLen: 32, HashFunction: sha512.New}
+	check := password.Verify(request.Password, passwords[0], passwords[1], options)
+	return &proto.PasswordCheckResponse{Success: check}, nil
 }
