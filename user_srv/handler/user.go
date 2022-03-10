@@ -2,7 +2,10 @@ package handler
 
 import (
 	"context"
+	"crypto/sha512"
+	"fmt"
 
+	"github.com/anaskhan96/go-password-encoder"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
@@ -104,6 +107,33 @@ func (us UserServer) GetUserByMobile(ctx context.Context, request *proto.MobileR
 	}
 	if result.RowsAffected == 0 {
 		return nil, status.Errorf(codes.NotFound, "用户不存在")
+	}
+
+	userRs := ModelToUserResponse(user)
+	return &userRs, nil
+}
+
+func (us UserServer) CreateUser(ctx context.Context, request *proto.CreateUserRequest) (*proto.UserResponse, error) {
+	//新建用户
+	//查询电话是否存在
+	var user model.User
+	result := global.DB.Where(&model.User{Mobile: request.Mobile}).First(&user)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	if result.RowsAffected == 1 {
+		return nil, status.Errorf(codes.AlreadyExists, "用户已存在")
+	}
+
+	user.UserName = request.UserName
+	user.Mobile = request.Mobile
+	options := &password.Options{SaltLen: 16, Iterations: 100, KeyLen: 32, HashFunction: sha512.New}
+	salt, encodedPwd := password.Encode(request.Password, options)
+	user.Password = fmt.Sprintf("%s$%s", salt, encodedPwd)
+
+	result = global.DB.Create(&user)
+	if result.Error != nil {
+		return nil, status.Errorf(codes.Internal, result.Error.Error())
 	}
 
 	userRs := ModelToUserResponse(user)
