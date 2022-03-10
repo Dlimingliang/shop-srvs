@@ -3,6 +3,8 @@ package handler
 import (
 	"context"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
 
 	"github.com/Dlimingliang/shop_srvs/user_srv/global"
@@ -52,7 +54,6 @@ func ModelToUserResponse(user model.User) proto.UserResponse {
 }
 
 func (us UserServer) GetUserPage(ctx context.Context, request *proto.UserPageRequest) (*proto.UserPageResponse, error) {
-
 	//查询全部用户
 	var users []model.User
 	result := global.DB.Find(&users)
@@ -74,4 +75,34 @@ func (us UserServer) GetUserPage(ctx context.Context, request *proto.UserPageReq
 		rsp.Data = append(rsp.Data, &userRs)
 	}
 	return rsp, nil
+}
+
+func (us UserServer) GetUserByID(ctx context.Context, request *proto.IDRequest) (*proto.UserResponse, error) {
+	//通过id查询用户
+	var user model.User
+	result := global.DB.First(&user, request.Id)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	if result.RowsAffected == 0 {
+		return nil, status.Errorf(codes.NotFound, "用户不存在")
+	}
+
+	userRs := ModelToUserResponse(user)
+	return &userRs, nil
+}
+
+func (us UserServer) GetUserByMobile(ctx context.Context, request *proto.MobileRequest) (*proto.UserResponse, error) {
+	//通过电话查询用户
+	var user model.User
+	result := global.DB.Where(&model.User{Mobile: request.Mobile}).First(&user)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	if result.RowsAffected == 0 {
+		return nil, status.Errorf(codes.NotFound, "用户不存在")
+	}
+
+	userRs := ModelToUserResponse(user)
+	return &userRs, nil
 }
