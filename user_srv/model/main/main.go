@@ -1,17 +1,19 @@
 package main
 
 import (
+	"crypto/sha512"
 	"fmt"
-	"github.com/Dlimingliang/shop_srvs/user_srv/global"
 	"log"
 	"os"
 	"time"
 
+	"github.com/anaskhan96/go-password-encoder"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 
+	"github.com/Dlimingliang/shop_srvs/user_srv/global"
 	"github.com/Dlimingliang/shop_srvs/user_srv/model"
 )
 
@@ -43,5 +45,18 @@ func main() {
 	db.AutoMigrate(&model.User{})
 	if err != nil {
 		panic(err)
+	}
+
+	options := &password.Options{SaltLen: 16, Iterations: 100, KeyLen: 32, HashFunction: sha512.New}
+	salt, encodedPwd := password.Encode("generic password", options)
+	dbPassword := fmt.Sprintf("%s$%s", salt, encodedPwd)
+
+	for i := 0; i < 10; i++ {
+		user := model.User{
+			UserName: fmt.Sprintf("lml%d", i),
+			Mobile:   fmt.Sprintf("1388961430%d", i),
+			Password: dbPassword,
+		}
+		db.Create(&user)
 	}
 }
