@@ -50,8 +50,8 @@ func ModelToUserResponse(user model.User) proto.UserResponse {
 		UserName: user.UserName,
 		Mobile:   user.Mobile,
 		Password: user.Password,
-		//Birthday: 0,
-		Role: int32(user.Role),
+		Gender:   user.Gender,
+		Role:     int32(user.Role),
 	}
 
 	if user.Birthday != nil {
@@ -150,10 +150,17 @@ func (us UserServer) UpdateUser(ctx context.Context, request *proto.UpdateUserRe
 		return nil, status.Errorf(codes.NotFound, "用户不存在")
 	}
 
-	user.UserName = request.UserName
-	user.Gender = request.Gender
-	birthDay := time.Unix(int64(request.Birthday), 0)
-	user.Birthday = &birthDay
+	if request.UserName != "" {
+		user.UserName = request.UserName
+	}
+	if request.Gender != "" {
+		user.Gender = request.Gender
+	}
+	if request.Birthday != 0 {
+		birthDay := time.Unix(int64(request.Birthday), 0)
+		user.Birthday = &birthDay
+	}
+
 	//会更新所有字段即使是非零的值,因为之前查询了所有字段出来，并且进行更新，所以不会有问题
 	result = global.DB.Save(&user)
 	if result.Error != nil {
