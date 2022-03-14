@@ -48,7 +48,7 @@ func main() {
 	}
 
 	options := &password.Options{SaltLen: 16, Iterations: 100, KeyLen: 32, HashFunction: sha512.New}
-	salt, encodedPwd := password.Encode("generic password", options)
+	salt, encodedPwd := password.Encode("123456", options)
 	dbPassword := fmt.Sprintf("%s$%s", salt, encodedPwd)
 
 	for i := 0; i < 10; i++ {
