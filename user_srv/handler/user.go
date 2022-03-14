@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"crypto/sha512"
+	"errors"
 	"fmt"
 	"strings"
 	"time"
@@ -117,7 +118,7 @@ func (us UserServer) CreateUser(ctx context.Context, request *proto.CreateUserRe
 	//新建用户
 	var user model.User
 	result := global.DB.Where(&model.User{Mobile: request.Mobile}).First(&user)
-	if result.Error != nil {
+	if !errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil, result.Error
 	}
 	if result.RowsAffected == 1 {

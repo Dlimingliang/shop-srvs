@@ -44,8 +44,23 @@ func TestGetUserPage() {
 	}
 }
 
+func TestCreateUser() {
+	for i := 0; i < 10; i++ {
+		user, err := userClient.CreateUser(context.Background(), &proto.CreateUserRequest{
+			UserName: fmt.Sprintf("lml%d", i),
+			Mobile:   fmt.Sprintf("1388961430%d", i),
+			Password: "123456",
+		})
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(user.Id)
+	}
+}
+
 func main() {
 	Init()
-	TestGetUserPage()
+	//TestGetUserPage()
+	TestCreateUser()
 	conn.Close()
 }
