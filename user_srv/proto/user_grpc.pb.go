@@ -37,7 +37,7 @@ func NewUserClient(cc grpc.ClientConnInterface) UserClient {
 
 func (c *userClient) GetUserPage(ctx context.Context, in *UserPageRequest, opts ...grpc.CallOption) (*UserPageResponse, error) {
 	out := new(UserPageResponse)
-	err := c.cc.Invoke(ctx, "/User/GetUserPage", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.User/GetUserPage", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (c *userClient) GetUserPage(ctx context.Context, in *UserPageRequest, opts 
 
 func (c *userClient) GetUserByID(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*UserResponse, error) {
 	out := new(UserResponse)
-	err := c.cc.Invoke(ctx, "/User/GetUserByID", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.User/GetUserByID", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +55,7 @@ func (c *userClient) GetUserByID(ctx context.Context, in *IDRequest, opts ...grp
 
 func (c *userClient) GetUserByMobile(ctx context.Context, in *MobileRequest, opts ...grpc.CallOption) (*UserResponse, error) {
 	out := new(UserResponse)
-	err := c.cc.Invoke(ctx, "/User/GetUserByMobile", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.User/GetUserByMobile", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +64,7 @@ func (c *userClient) GetUserByMobile(ctx context.Context, in *MobileRequest, opt
 
 func (c *userClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
 	out := new(UserResponse)
-	err := c.cc.Invoke(ctx, "/User/CreateUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.User/CreateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -73,7 +73,7 @@ func (c *userClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts
 
 func (c *userClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/User/UpdateUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.User/UpdateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +82,7 @@ func (c *userClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts
 
 func (c *userClient) CheckPassword(ctx context.Context, in *PasswordCheckRequest, opts ...grpc.CallOption) (*PasswordCheckResponse, error) {
 	out := new(PasswordCheckResponse)
-	err := c.cc.Invoke(ctx, "/User/CheckPassword", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.User/CheckPassword", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -147,7 +147,7 @@ func _User_GetUserPage_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/User/GetUserPage",
+		FullMethod: "/proto.User/GetUserPage",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).GetUserPage(ctx, req.(*UserPageRequest))
@@ -165,7 +165,7 @@ func _User_GetUserByID_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/User/GetUserByID",
+		FullMethod: "/proto.User/GetUserByID",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).GetUserByID(ctx, req.(*IDRequest))
@@ -183,7 +183,7 @@ func _User_GetUserByMobile_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/User/GetUserByMobile",
+		FullMethod: "/proto.User/GetUserByMobile",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).GetUserByMobile(ctx, req.(*MobileRequest))
@@ -201,7 +201,7 @@ func _User_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(int
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/User/CreateUser",
+		FullMethod: "/proto.User/CreateUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).CreateUser(ctx, req.(*CreateUserRequest))
@@ -219,7 +219,7 @@ func _User_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(int
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/User/UpdateUser",
+		FullMethod: "/proto.User/UpdateUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).UpdateUser(ctx, req.(*UpdateUserRequest))
@@ -237,7 +237,7 @@ func _User_CheckPassword_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/User/CheckPassword",
+		FullMethod: "/proto.User/CheckPassword",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).CheckPassword(ctx, req.(*PasswordCheckRequest))
@@ -249,7 +249,7 @@ func _User_CheckPassword_Handler(srv interface{}, ctx context.Context, dec func(
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var User_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "User",
+	ServiceName: "proto.User",
 	HandlerType: (*UserServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
