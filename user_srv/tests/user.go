@@ -4,7 +4,9 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/Dlimingliang/shop_srvs/user_srv/model"
 	"google.golang.org/grpc"
+	"time"
 
 	"github.com/Dlimingliang/shop_srvs/user_srv/proto"
 )
@@ -72,8 +74,8 @@ func TestUpdateUser() {
 	updateUserRequest := proto.UpdateUserRequest{
 		Id:       user.Id,
 		UserName: "lml-update",
-		//Gender:   "男",
-		//Birthday: uint64(time.Now().Unix()),
+		Gender:   model.GenderMale,
+		Birthday: uint64(time.Now().Unix()),
 	}
 	fmt.Println("修改的用户参数为: ", updateUserRequest)
 	_, err = userClient.UpdateUser(context.Background(), &updateUserRequest)
@@ -95,8 +97,8 @@ func TestUpdateUser() {
 
 func main() {
 	Init()
-	//TestGetUserPage()
 	//TestCreateUser()
-	TestUpdateUser()
+	//TestGetUserPage()
+	//TestUpdateUser()
 	conn.Close()
 }

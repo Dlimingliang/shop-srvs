@@ -19,7 +19,7 @@ message UserPageRequest {
 }
 
 message IDRequest {
-  int32 id = 1;
+  uint64 id = 1;
 }
 
 message MobileRequest {
@@ -33,9 +33,9 @@ message CreateUserRequest {
 }
 
 message UpdateUserRequest {
-  int32 id = 1;
+  uint64 id = 1;
   string userName = 2;
-  string gender = 3;
+  uint32 gender = 3;
   uint64 birthday = 4;
 }
 
@@ -45,18 +45,20 @@ message PasswordCheckRequest {
 }
 
 message UserPageResponse {
-  int32 total = 1;
+  uint32 total = 1;
   repeated UserResponse data = 2;
 }
 
 message UserResponse {
-  int32 id = 1;
+  uint64 id = 1;
   string userName = 2;
   string mobile = 3;
   string password = 4;
-  string gender = 5;
+  uint32 gender = 5;
   uint64 birthday = 6;
-  int32 role = 7;
+  uint32 role = 7;
+  uint64 createTime = 8;
+  uint64 updateTime = 9;
 }
 
 message PasswordCheckResponse {

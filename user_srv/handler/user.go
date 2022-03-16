@@ -46,12 +46,14 @@ func ModelToUserResponse(user model.User) proto.UserResponse {
 	//proto生成的对象是有默认值的,我们不可以随便将数据库查询的东西赋值给proto,如果为nil,那么grpc可能报错
 	//所以我们查询出来的东西，如果是可以为空的，那么我们要进行判断
 	userRs := proto.UserResponse{
-		Id:       user.ID,
-		UserName: user.UserName,
-		Mobile:   user.Mobile,
-		Password: user.Password,
-		Gender:   user.Gender,
-		Role:     int32(user.Role),
+		Id:         user.ID,
+		UserName:   user.UserName,
+		Mobile:     user.Mobile,
+		Password:   user.Password,
+		Gender:     uint32(user.Gender),
+		Role:       uint32(user.Role),
+		CreateTime: uint64(user.CreatedAt.Unix()),
+		UpdateTime: uint64(user.UpdatedAt),
 	}
 
 	if user.Birthday != nil {
@@ -76,7 +78,7 @@ func (us UserServer) GetUserPage(ctx context.Context, request *proto.UserPageReq
 
 	//构建返回数据
 	rsp := &proto.UserPageResponse{}
-	rsp.Total = int32(result.RowsAffected)
+	rsp.Total = uint32(result.RowsAffected)
 	for _, user := range users {
 		userRs := ModelToUserResponse(user)
 		rsp.Data = append(rsp.Data, &userRs)
@@ -118,7 +120,7 @@ func (us UserServer) CreateUser(ctx context.Context, request *proto.CreateUserRe
 	//新建用户
 	var user model.User
 	result := global.DB.Where(&model.User{Mobile: request.Mobile}).First(&user)
-	if !errors.Is(result.Error, gorm.ErrRecordNotFound) {
+	if result.Error != nil && !errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil, result.Error
 	}
 	if result.RowsAffected == 1 {
@@ -143,24 +145,17 @@ func (us UserServer) UpdateUser(ctx context.Context, request *proto.UpdateUserRe
 	//更新用户
 	var user model.User
 	result := global.DB.First(&user, request.Id)
-	if result.Error != nil {
+	if result.Error != nil && !errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil, result.Error
 	}
 	if result.RowsAffected == 0 {
 		return nil, status.Errorf(codes.NotFound, "用户不存在")
 	}
 
-	if request.UserName != "" {
-		user.UserName = request.UserName
-	}
-	if request.Gender != "" {
-		user.Gender = request.Gender
-	}
-	if request.Birthday != 0 {
-		birthDay := time.Unix(int64(request.Birthday), 0)
-		user.Birthday = &birthDay
-	}
-
+	user.UserName = request.UserName
+	user.Gender = uint8(request.Gender)
+	birthDay := time.Unix(int64(request.Birthday), 0)
+	user.Birthday = &birthDay
 	//会更新所有字段即使是非零的值,因为之前查询了所有字段出来，并且进行更新，所以不会有问题
 	result = global.DB.Save(&user)
 	if result.Error != nil {
