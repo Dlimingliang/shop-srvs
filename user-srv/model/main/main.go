@@ -13,8 +13,8 @@ import (
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 
-	"github.com/Dlimingliang/shop_srvs/user_srv/global"
-	"github.com/Dlimingliang/shop_srvs/user_srv/model"
+	"github.com/Dlimingliang/shop_srvs/user-srv/global"
+	"github.com/Dlimingliang/shop_srvs/user-srv/model"
 )
 
 func main() {

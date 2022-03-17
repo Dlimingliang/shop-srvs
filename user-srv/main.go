@@ -7,8 +7,8 @@ import (
 
 	"google.golang.org/grpc"
 
-	"github.com/Dlimingliang/shop_srvs/user_srv/handler"
-	"github.com/Dlimingliang/shop_srvs/user_srv/proto"
+	"github.com/Dlimingliang/shop_srvs/user-srv/handler"
+	"github.com/Dlimingliang/shop_srvs/user-srv/proto"
 )
 
 var (

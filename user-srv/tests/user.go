@@ -4,11 +4,11 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/Dlimingliang/shop_srvs/user_srv/model"
+	"github.com/Dlimingliang/shop_srvs/user-srv/model"
 	"google.golang.org/grpc"
 	"time"
 
-	"github.com/Dlimingliang/shop_srvs/user_srv/proto"
+	"github.com/Dlimingliang/shop_srvs/user-srv/proto"
 )
 
 var userClient proto.UserClient
