@@ -90,7 +90,7 @@ func (us UserServer) GetUserByID(ctx context.Context, request *proto.IDRequest) 
 	//通过id查询用户
 	var user model.User
 	result := global.DB.First(&user, request.Id)
-	if result.Error != nil {
+	if result.Error != nil && !errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil, result.Error
 	}
 	if result.RowsAffected == 0 {
@@ -105,7 +105,7 @@ func (us UserServer) GetUserByMobile(ctx context.Context, request *proto.MobileR
 	//通过电话查询用户
 	var user model.User
 	result := global.DB.Where(&model.User{Mobile: request.Mobile}).First(&user)
-	if result.Error != nil {
+	if result.Error != nil && !errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil, result.Error
 	}
 	if result.RowsAffected == 0 {
