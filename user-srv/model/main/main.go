@@ -13,7 +13,6 @@ import (
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 
-	"github.com/Dlimingliang/shop_srvs/user-srv/global"
 	"github.com/Dlimingliang/shop_srvs/user-srv/model"
 )
 
@@ -30,7 +29,7 @@ func main() {
 	)
 
 	//建立数据库连接
-	dsn := fmt.Sprintf("root:123456!@tcp(%s:3306)/shop_user?charset=utf8mb4&parseTime=True&loc=Local", global.DbIp)
+	dsn := fmt.Sprintf("root:123456!@tcp(%s:3306)/shop_user?charset=utf8mb4&parseTime=True&loc=Local", "127.0.0.1")
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true, //配置单数表名,默认如果struct为User,生成的表为users.配置单数表名生成的表为user
@@ -38,13 +37,13 @@ func main() {
 		Logger: newLogger,
 	})
 	if err != nil {
-		panic(err)
+		panic(any(err))
 	}
 
 	//生成表结构
 	db.AutoMigrate(&model.User{})
 	if err != nil {
-		panic(err)
+		panic(any(err))
 	}
 
 	options := &password.Options{SaltLen: 16, Iterations: 100, KeyLen: 32, HashFunction: sha512.New}

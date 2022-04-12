@@ -19,7 +19,7 @@ func Init() {
 	var err error
 	conn, err = grpc.Dial(*addr, grpc.WithInsecure())
 	if err != nil {
-		panic(err.Error())
+		panic(any(err.Error()))
 	}
 	userClient = proto.NewUserClient(conn)
 }
@@ -30,7 +30,7 @@ func TestGetUserPage() {
 		PageSize: 2,
 	})
 	if err != nil {
-		panic(err)
+		panic(any(err))
 	}
 	for _, user := range rsp.Data {
 		fmt.Println(user.UserName, user.Mobile, user.Password)
@@ -39,7 +39,7 @@ func TestGetUserPage() {
 			EncryptedPassword: user.Password,
 		})
 		if err != nil {
-			panic(err)
+			panic(any(err))
 		}
 		fmt.Println(checkResponse.Success)
 	}
@@ -53,7 +53,7 @@ func TestCreateUser() {
 			Password: "123456",
 		})
 		if err != nil {
-			panic(err)
+			panic(any(err))
 		}
 		fmt.Println(user.Id)
 	}
@@ -66,7 +66,7 @@ func TestUpdateUser() {
 		PageSize: 2,
 	})
 	if err != nil {
-		panic(err)
+		panic(any(err))
 	}
 	var user *proto.UserResponse
 	user = rsp.Data[0]
@@ -80,17 +80,17 @@ func TestUpdateUser() {
 	fmt.Println("修改的用户参数为: ", updateUserRequest)
 	_, err = userClient.UpdateUser(context.Background(), &updateUserRequest)
 	if err != nil {
-		panic(err)
+		panic(any(err))
 	}
 
 	userRsp, err := userClient.GetUserByID(context.Background(), &proto.IDRequest{Id: user.Id})
 	if err != nil {
-		panic(err)
+		panic(any(err))
 	}
 	fmt.Println("根据id查询的结果为: ", userRsp.UserName, userRsp.Gender, userRsp.Birthday)
 	userRsp, err = userClient.GetUserByMobile(context.Background(), &proto.MobileRequest{Mobile: user.Mobile})
 	if err != nil {
-		panic(err)
+		panic(any(err))
 	}
 	fmt.Println("根据电话查询的结果为: ", userRsp.UserName, userRsp.Gender, userRsp.Birthday)
 }
