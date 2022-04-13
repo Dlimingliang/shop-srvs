@@ -6,6 +6,8 @@ import (
 	"net"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/health"
+	"google.golang.org/grpc/health/grpc_health_v1"
 
 	"github.com/Dlimingliang/shop-srvs/user-srv/handler"
 	"github.com/Dlimingliang/shop-srvs/user-srv/initialize"
@@ -21,10 +23,13 @@ func main() {
 	initialize.InitLogger()
 	initialize.InitConfig()
 	initialize.InitDB()
-
 	flag.Parse()
+
 	server := grpc.NewServer()
 	proto.RegisterUserServer(server, handler.UserServer{})
+
+	//注册健康检查服务
+	grpc_health_v1.RegisterHealthServer(server, health.NewServer())
 
 	listen, err := net.Listen("tcp", fmt.Sprintf("%s:%d", *ip, *port))
 	if err != nil {
