@@ -34,5 +34,4 @@ func main() {
 	if err != nil {
 		panic(any("grpc启动失败: " + err.Error()))
 	}
-	fmt.Println("xchjvlashjdfiljqwier")
 }
