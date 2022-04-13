@@ -7,9 +7,9 @@ import (
 
 	"google.golang.org/grpc"
 
-	"github.com/Dlimingliang/shop_srvs/user-srv/handler"
-	"github.com/Dlimingliang/shop_srvs/user-srv/initialize"
-	"github.com/Dlimingliang/shop_srvs/user-srv/proto"
+	"github.com/Dlimingliang/shop-srvs/user-srv/handler"
+	"github.com/Dlimingliang/shop-srvs/user-srv/initialize"
+	"github.com/Dlimingliang/shop-srvs/user-srv/proto"
 )
 
 var (
@@ -34,4 +34,5 @@ func main() {
 	if err != nil {
 		panic(any("grpc启动失败: " + err.Error()))
 	}
+	fmt.Println("xchjvlashjdfiljqwier")
 }

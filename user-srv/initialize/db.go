@@ -11,7 +11,7 @@ import (
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 
-	"github.com/Dlimingliang/shop_srvs/user-srv/global"
+	"github.com/Dlimingliang/shop-srvs/user-srv/global"
 )
 
 func InitDB() {
@@ -29,7 +29,7 @@ func InitDB() {
 	//建立数据库连接
 	mysqlConfig := global.ServerConfig.MysqlConfig
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		mysqlConfig.Name, mysqlConfig.Password, mysqlConfig.Host, mysqlConfig.Port, mysqlConfig.Name)
+		mysqlConfig.User, mysqlConfig.Password, mysqlConfig.Host, mysqlConfig.Port, mysqlConfig.Name)
 	var err error
 	global.DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{

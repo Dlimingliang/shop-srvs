@@ -3,4 +3,4 @@ mysql:
   port: 6379
   name: shop_user
   user: root
-  password: 123456
+  password: 123456!
