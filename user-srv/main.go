@@ -18,7 +18,7 @@ import (
 )
 
 const (
-	address = "172.0.0.1"
+	address = "127.0.0.1"
 )
 
 var (
