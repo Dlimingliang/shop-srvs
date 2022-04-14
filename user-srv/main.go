@@ -49,19 +49,21 @@ func main() {
 	if err != nil {
 		zap.S().Panic("生成consulclient失败: ", err.Error())
 	}
-	check := &api.AgentServiceCheck{
-		GRPC:                           fmt.Sprintf("%s:%d", address, *port),
-		Timeout:                        "5s",
-		Interval:                       "5s",
-		DeregisterCriticalServiceAfter: "10s",
-	}
+
 	//生成注册对象
 	registration := new(api.AgentServiceRegistration)
 	registration.Name = global.ServerConfig.Name
 	registration.ID = global.ServerConfig.Name
 	registration.Port = *port
 	registration.Address = address
-	registration.Check = check
+	//本地开发，暂时注释健康检查
+	//check := &api.AgentServiceCheck{
+	//	GRPC:                           fmt.Sprintf("%s:%d", address, *port),
+	//	Timeout:                        "5s",
+	//	Interval:                       "5s",
+	//	DeregisterCriticalServiceAfter: "10s",
+	//}
+	//registration.Check = check
 	err = client.Agent().ServiceRegister(registration)
 	if err != nil {
 		zap.S().Panic("user-srv注册consul失败: " + err.Error())
