@@ -1,7 +1,9 @@
 package config
 
 type ServerConfig struct {
-	MysqlConfig MysqlServerConfig `mapstructure:"mysql"`
+	Name         string             `mapstructure:"server-name"`
+	MysqlConfig  MysqlServerConfig  `mapstructure:"mysql"`
+	ConsulConfig ConsulServerConfig `mapstructure:"consul"`
 }
 
 type MysqlServerConfig struct {
@@ -10,4 +12,9 @@ type MysqlServerConfig struct {
 	Name     string `mapstructure:"name"`
 	User     string `mapstructure:"user"`
 	Password string `mapstructure:"password"`
+}
+
+type ConsulServerConfig struct {
+	Host string `mapstructure:"host"`
+	Port int    `mapstructure:"port"`
 }

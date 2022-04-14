@@ -1,6 +1,12 @@
+server-name: user-srv
+
 mysql:
   host: 127.0.0.1
   port: 3306
   name: shop_user
   user: root
   password: 123456!
+
+conosul:
+  host: 127.0.0.1
+  port: 8500
