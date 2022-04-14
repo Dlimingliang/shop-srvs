@@ -7,6 +7,6 @@ mysql:
   user: root
   password: 123456!
 
-conosul:
+consul:
   host: 127.0.0.1
   port: 8500
