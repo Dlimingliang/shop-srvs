@@ -3,5 +3,5 @@ port: 8848
 user: nacos
 password: nacos
 namespace: d6bd7a0f-c05f-495b-b4fe-b617828ccf52
-dataId: user-web.yaml
+dataId: user-srv.yaml
 group: dev
