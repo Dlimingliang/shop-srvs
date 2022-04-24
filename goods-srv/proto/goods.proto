@@ -1,0 +1,193 @@
+syntax = "proto3";
+
+package proto;
+import "google/protobuf/empty.proto";
+option go_package = "./;proto";
+
+service Goods {
+  //商品接口
+  rpc GetGoodsPage (GoodsPageReq) returns (GoodsListRes);
+  rpc GetGoodsListByIds (GoodsIdsReq) returns (GoodsListRes);
+  rpc CreateGoods (CreateGoodsReq) returns (GoodsRes);
+  rpc DeleteGoods (DeleteGoodsReq) returns (google.protobuf.Empty);
+  rpc UpdateGoods (CreateGoodsReq) returns (google.protobuf.Empty);
+  rpc GetGoods (GoodsReq) returns (GoodsRes);
+
+  //商品分类
+  rpc GetAllCategoryList(google.protobuf.Empty) returns (CategoryListRes);
+  rpc GetSubCategoryList (SubCategoryReq) returns (SubCategoryListRes);
+  rpc CreateCategory (CategoryReq) returns (CategoryRes);
+  rpc UpdateCategory (CategoryReq) returns (google.protobuf.Empty);
+  rpc DeleteCategory (DeleteCategoryReq) returns (google.protobuf.Empty);
+
+  //品牌
+  rpc GetBrandPage (BrandPageReq) returns (BrandListRes);
+  rpc CreateBrand (BrandReq) returns (BrandRes);
+  rpc UpdateBrand (BrandReq) returns (google.protobuf.Empty);
+  rpc DeleteBrand (BrandReq) returns (google.protobuf.Empty);
+
+  //轮播图
+  rpc GetBannerList (google.protobuf.Empty) returns (BannerListRes);
+  rpc CreateBanner (BannerReq) returns (BannerRes);
+  rpc UpdateBanner (BannerReq) returns (google.protobuf.Empty);
+  rpc DeleteBanner (BrandReq) returns (google.protobuf.Empty);
+
+  //品牌分类 1.7待实现
+}
+
+message GoodsPageReq {
+  int32 priceMin = 1;
+  int32 priceMax = 2;
+  bool isHot = 3;
+  bool isNew = 4;
+  bool isTab = 5;
+  int32 topCategory = 6;
+  string keyWords = 7;
+  int32 brand = 8;
+  int32 pages = 9;
+  int32 pageSize = 10;
+}
+
+message GoodsIdsReq {
+  repeated int32 ids = 1;
+}
+
+message CreateGoodsReq {
+  int32 id = 1;
+  string name = 2;
+  string goodsSn = 3;
+  int32 stocks = 4; //库存
+  float originPrice = 5;
+  float salePrice = 6;
+  string goodsDesc = 7;
+  bool shipFree = 8;
+  repeated string goodsImages = 9;
+  repeated string goodsDesImages = 10;
+  string goodsFrontImage = 11;
+  bool isNew = 12;
+  bool isHot = 13;
+  bool onSale = 14;
+  int32 categoryID = 15;
+  int32 brandID = 16;
+}
+
+message DeleteGoodsReq {
+  int32 id = 1;
+}
+
+message GoodsReq {
+  int32 id = 1;
+}
+
+message SubCategoryReq {
+  int32 id = 1;
+  int32 level = 2;
+}
+
+message CategoryReq {
+  int32 id = 1;
+  string name = 2;
+  int32 level = 3;
+  bool isTab = 4;
+  int32 parentCategoryId = 5;
+}
+
+message DeleteCategoryReq {
+  int32 id = 1;
+}
+
+message BrandPageReq {
+  int32 pages = 1;
+  int32 pageSize = 2;
+}
+
+message BrandReq {
+  int32 id = 1;
+  string name = 2;
+  string logo = 3;
+}
+
+message BannerReq {
+  int32 id = 1;
+  string image = 2;
+  string url = 3;
+  string order = 4;
+}
+
+
+
+
+message GoodsListRes {
+  int32 total = 1;
+  repeated GoodsRes data = 2;
+}
+
+message GoodsRes {
+  int32 id = 1;
+  int32 categoryID = 2;
+  string name = 3;
+  string goodsSn = 4;
+  int32 saleNum = 5;
+  int32 clickNum = 6;
+  int32 FavNum = 7;
+  float originPrice = 8;
+  float salePrice = 9;
+  string goodsDesc = 10;
+  bool shipFree = 11;
+  repeated string goodsImages = 12;
+  repeated string goodsDesImages = 13;
+  string goodsFrontImage = 14;
+  bool isNew = 15;
+  bool isHot = 16;
+  bool onSale = 17;
+  int64 createTime = 18;
+  CategoryBriefRes category = 19;
+  BrandRes brand = 20;
+}
+
+message CategoryBriefRes {
+  int32 id = 1;
+  string name = 2;
+}
+
+message CategoryListRes {
+  int32 total = 1;
+  repeated CategoryRes data = 2;
+}
+
+message SubCategoryListRes {
+  int32 total = 1;
+  CategoryRes category = 2;
+  repeated CategoryRes subCategoryList = 3;
+}
+
+message CategoryRes {
+  int32 id = 1;
+  string name = 2;
+  int32 level = 3;
+  bool isTab = 4;
+  int32 parentCategory = 5;
+}
+
+message BrandListRes {
+  int32 total = 1;
+  repeated BrandRes data = 2;
+}
+
+message BrandRes {
+  int32 id = 1;
+  string name = 2;
+  string logo = 3;
+}
+
+message BannerListRes {
+  int32 total = 1;
+  repeated BrandRes data = 2;
+}
+
+message BannerRes {
+  int32 id = 1;
+  string image = 2;
+  string url = 3;
+  int32 order = 4;
+}
