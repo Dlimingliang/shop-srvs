@@ -15,11 +15,11 @@ import (
 )
 
 func InitConfig() {
-	configFile := "user-srv/config-dev.yaml"
+	configFile := "goods-srv/config-dev.yaml"
 	viper.AutomaticEnv()
 	isProd := viper.GetBool("IS_PROD")
 	if isProd {
-		configFile = "user-web/config-prod.yaml"
+		configFile = "goods-srv/config-prod.yaml"
 	}
 
 	v := viper.New()
@@ -75,7 +75,7 @@ func InitConfig() {
 	if err != nil {
 		zap.S().Panic(err)
 	}
-	zap.S().Infof("user-web配置信息: %v", global.ServerConfig)
+	zap.S().Infof("goods-srv配置信息: %v", global.ServerConfig)
 
 	err = configClient.ListenConfig(vo.ConfigParam{
 		DataId: nacosConfig.DataId,

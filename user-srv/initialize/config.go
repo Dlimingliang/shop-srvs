@@ -75,7 +75,7 @@ func InitConfig() {
 	if err != nil {
 		zap.S().Panic(err)
 	}
-	zap.S().Infof("user-web配置信息: %v", global.ServerConfig)
+	zap.S().Infof("user-srv配置信息: %v", global.ServerConfig)
 
 	err = configClient.ListenConfig(vo.ConfigParam{
 		DataId: nacosConfig.DataId,
