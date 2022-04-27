@@ -63,7 +63,7 @@ func (gs GoodsServer) CreateBrand(ctx context.Context, request *proto.BrandReq) 
 func (gs GoodsServer) UpdateBrand(ctx context.Context, request *proto.BrandReq) (*emptypb.Empty, error) {
 	var brand model.Brands
 	if result := global.DB.First(&brand, request.Id); result.RowsAffected == 0 {
-		return nil, status.Errorf(codes.NotFound, "用户不存在")
+		return nil, status.Errorf(codes.NotFound, "品牌不存在")
 	}
 
 	if request.Name != "" {
