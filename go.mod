@@ -12,8 +12,10 @@ require (
 	go.uber.org/zap v1.21.0
 	google.golang.org/grpc v1.45.0
 	google.golang.org/protobuf v1.28.0
+	gopkg.in/yaml.v2 v2.4.0
 	gorm.io/driver/mysql v1.3.3
 	gorm.io/gorm v1.23.4
+	gorm.io/plugin/soft_delete v1.1.0
 )
 
 require (
@@ -59,5 +61,4 @@ require (
 	google.golang.org/genproto v0.0.0-20211208223120-3a66f561d7aa // indirect
 	gopkg.in/ini.v1 v1.66.4 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
