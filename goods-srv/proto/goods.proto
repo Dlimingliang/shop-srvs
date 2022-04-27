@@ -153,6 +153,7 @@ message CategoryBriefRes {
 message CategoryListRes {
   int32 total = 1;
   repeated CategoryRes data = 2;
+  string jsonData = 3;
 }
 
 message SubCategoryListRes {
