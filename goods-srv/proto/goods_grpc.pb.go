@@ -41,7 +41,7 @@ type GoodsClient interface {
 	GetBannerList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*BannerListRes, error)
 	CreateBanner(ctx context.Context, in *BannerReq, opts ...grpc.CallOption) (*BannerRes, error)
 	UpdateBanner(ctx context.Context, in *BannerReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	DeleteBanner(ctx context.Context, in *BrandReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	DeleteBanner(ctx context.Context, in *BannerReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type goodsClient struct {
@@ -214,7 +214,7 @@ func (c *goodsClient) UpdateBanner(ctx context.Context, in *BannerReq, opts ...g
 	return out, nil
 }
 
-func (c *goodsClient) DeleteBanner(ctx context.Context, in *BrandReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *goodsClient) DeleteBanner(ctx context.Context, in *BannerReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/proto.Goods/DeleteBanner", in, out, opts...)
 	if err != nil {
@@ -249,7 +249,7 @@ type GoodsServer interface {
 	GetBannerList(context.Context, *emptypb.Empty) (*BannerListRes, error)
 	CreateBanner(context.Context, *BannerReq) (*BannerRes, error)
 	UpdateBanner(context.Context, *BannerReq) (*emptypb.Empty, error)
-	DeleteBanner(context.Context, *BrandReq) (*emptypb.Empty, error)
+	DeleteBanner(context.Context, *BannerReq) (*emptypb.Empty, error)
 	mustEmbedUnimplementedGoodsServer()
 }
 
@@ -311,7 +311,7 @@ func (UnimplementedGoodsServer) CreateBanner(context.Context, *BannerReq) (*Bann
 func (UnimplementedGoodsServer) UpdateBanner(context.Context, *BannerReq) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateBanner not implemented")
 }
-func (UnimplementedGoodsServer) DeleteBanner(context.Context, *BrandReq) (*emptypb.Empty, error) {
+func (UnimplementedGoodsServer) DeleteBanner(context.Context, *BannerReq) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteBanner not implemented")
 }
 func (UnimplementedGoodsServer) mustEmbedUnimplementedGoodsServer() {}
@@ -652,7 +652,7 @@ func _Goods_UpdateBanner_Handler(srv interface{}, ctx context.Context, dec func(
 }
 
 func _Goods_DeleteBanner_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(BrandReq)
+	in := new(BannerReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -664,7 +664,7 @@ func _Goods_DeleteBanner_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: "/proto.Goods/DeleteBanner",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GoodsServer).DeleteBanner(ctx, req.(*BrandReq))
+		return srv.(GoodsServer).DeleteBanner(ctx, req.(*BannerReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }

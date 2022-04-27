@@ -30,7 +30,7 @@ service Goods {
   rpc GetBannerList (google.protobuf.Empty) returns (BannerListRes);
   rpc CreateBanner (BannerReq) returns (BannerRes);
   rpc UpdateBanner (BannerReq) returns (google.protobuf.Empty);
-  rpc DeleteBanner (BrandReq) returns (google.protobuf.Empty);
+  rpc DeleteBanner (BannerReq) returns (google.protobuf.Empty);
 
   //品牌分类 1.7待实现
 }
@@ -111,7 +111,7 @@ message BannerReq {
   int32 id = 1;
   string image = 2;
   string url = 3;
-  string order = 4;
+  int32 order = 4;
 }
 
 
@@ -182,7 +182,7 @@ message BrandRes {
 
 message BannerListRes {
   int32 total = 1;
-  repeated BrandRes data = 2;
+  repeated BannerRes data = 2;
 }
 
 message BannerRes {
