@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"fmt"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -24,7 +25,19 @@ func ModelToCategoryRes(category model.Category) proto.CategoryRes {
 }
 
 func (gs GoodsServer) GetAllCategoryList(ctx context.Context, req *emptypb.Empty) (*proto.CategoryListRes, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAllCategoryList not implemented")
+	var rs proto.CategoryListRes
+
+	var categoryList []model.Category
+	result := global.DB.Where(&model.Category{Level: 1}).Preload("SubCategory.SubCategory").Find(&categoryList)
+	if result.Error != nil {
+		return nil, status.Errorf(codes.Internal, result.Error.Error())
+	}
+	fmt.Println(categoryList)
+	for _, category := range categoryList {
+		categoryRes := ModelToCategoryRes(category)
+		rs.Data = append(rs.Data, &categoryRes)
+	}
+	return &rs, nil
 }
 func (gs GoodsServer) GetSubCategoryList(ctx context.Context, req *proto.SubCategoryReq) (*proto.SubCategoryListRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSubCategoryList not implemented")

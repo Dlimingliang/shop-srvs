@@ -7,6 +7,7 @@ type Category struct {
 	IsTab            bool   `gorm:"column:is_table;default:false;not null;comment:是否展示在搜索处"`
 	ParentCategoryId int32  `gorm:"column:parent_category_id;type:int;comment:父类id"`
 	ParentCategory   *Category
+	SubCategory      []*Category `gorm:"foreignKey:ParentCategoryId;references:ID"`
 }
 
 type Brands struct {

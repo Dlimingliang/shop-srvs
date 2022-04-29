@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/Dlimingliang/shop-srvs/goods-srv/proto"
 )
@@ -137,11 +138,23 @@ func TestCreateCategory() {
 	fmt.Println("category初始化完成")
 }
 
+func TestGetAllCategoryList() {
+	list, err := goodsClient.GetAllCategoryList(context.Background(), &emptypb.Empty{})
+	if err != nil {
+		panic(any(err))
+	}
+
+	for _, category := range list.Data {
+		fmt.Println(category.Name)
+	}
+}
+
 func main() {
 	Init()
 	//TestCreateBrand()
 	//TestUpdateBrand()
 	//TestDeleteBrand()
-	TestCreateCategory()
+	//TestCreateCategory()
+	TestGetAllCategoryList()
 	_ = conn.Close()
 }
