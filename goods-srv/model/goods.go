@@ -5,7 +5,7 @@ type Category struct {
 	Name             string `gorm:"column:name;type:varchar(20);not null;comment:名称"`
 	Level            int32  `gorm:"column:level;type:int;not null;comment:级别"`
 	IsTab            bool   `gorm:"column:is_table;default:false;not null;comment:是否展示在搜索处"`
-	ParentCategoryId int32  `gorm:"column:parent_category_id;type:int;not null;comment:父类id"`
+	ParentCategoryId int32  `gorm:"column:parent_category_id;type:int;comment:父类id"`
 	ParentCategory   *Category
 }
 

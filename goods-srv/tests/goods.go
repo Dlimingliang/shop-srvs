@@ -69,10 +69,79 @@ func TestDeleteBrand() {
 	}
 }
 
+func TestCreateCategory() {
+	category, err := goodsClient.CreateCategory(context.Background(), &proto.CategoryReq{
+		Name:  "家用电器",
+		Level: 1,
+		IsTab: true,
+	})
+	if err != nil {
+		panic(any(err))
+	}
+
+	air, err := goodsClient.CreateCategory(context.Background(), &proto.CategoryReq{
+		Name:             "空调",
+		Level:            2,
+		IsTab:            true,
+		ParentCategoryId: category.Id,
+	})
+	if err != nil {
+		panic(any(err))
+	}
+	_, err = goodsClient.CreateCategory(context.Background(), &proto.CategoryReq{
+		Name:             "新风空调",
+		Level:            3,
+		IsTab:            true,
+		ParentCategoryId: air.Id,
+	})
+	if err != nil {
+		panic(any(err))
+	}
+	_, err = goodsClient.CreateCategory(context.Background(), &proto.CategoryReq{
+		Name:             "空调挂机",
+		Level:            3,
+		IsTab:            true,
+		ParentCategoryId: air.Id,
+	})
+	if err != nil {
+		panic(any(err))
+	}
+
+	xiyiji, err := goodsClient.CreateCategory(context.Background(), &proto.CategoryReq{
+		Name:             "洗衣机",
+		Level:            2,
+		IsTab:            true,
+		ParentCategoryId: category.Id,
+	})
+	if err != nil {
+		panic(any(err))
+	}
+	_, err = goodsClient.CreateCategory(context.Background(), &proto.CategoryReq{
+		Name:             "滚筒洗衣机",
+		Level:            3,
+		IsTab:            true,
+		ParentCategoryId: xiyiji.Id,
+	})
+	if err != nil {
+		panic(any(err))
+	}
+	_, err = goodsClient.CreateCategory(context.Background(), &proto.CategoryReq{
+		Name:             "洗烘一体",
+		Level:            3,
+		IsTab:            true,
+		ParentCategoryId: xiyiji.Id,
+	})
+	if err != nil {
+		panic(any(err))
+	}
+	fmt.Println("category初始化完成")
+}
+
 func main() {
 	Init()
-	TestCreateBrand()
-	TestUpdateBrand()
-	TestDeleteBrand()
+	//TestCreateBrand()
+	//TestUpdateBrand()
+	//TestDeleteBrand()
+	TestCreateCategory()
 	_ = conn.Close()
 }
