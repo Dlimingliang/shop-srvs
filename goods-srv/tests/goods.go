@@ -149,12 +149,121 @@ func TestGetAllCategoryList() {
 	}
 }
 
+func TestCreateGoods() {
+	_, err := goodsClient.CreateGoods(context.Background(), &proto.CreateGoodsReq{
+		Name:            "商品6",
+		GoodsSn:         "123",
+		OriginPrice:     100,
+		SalePrice:       25.99,
+		GoodsDesc:       "我是描绘",
+		ShipFree:        false,
+		GoodsImages:     []string{"https://www.tukuppt.com/muban/xpdejwgw.html"},
+		GoodsDesImages:  []string{"https://www.tukuppt.com/muban/xpdejwgw.html"},
+		GoodsFrontImage: "https://www.tukuppt.com/muban/xpdejwgw.html",
+		IsNew:           false,
+		IsHot:           false,
+		OnSale:          false,
+		CategoryID:      6,
+		BrandID:         21,
+	})
+	if err != nil {
+		panic(any(err))
+	}
+
+	_, err = goodsClient.CreateGoods(context.Background(), &proto.CreateGoodsReq{
+		Name:            "商品7",
+		GoodsSn:         "123",
+		OriginPrice:     100,
+		SalePrice:       25.99,
+		GoodsDesc:       "我是描绘",
+		ShipFree:        false,
+		GoodsImages:     []string{"https://www.tukuppt.com/muban/xpdejwgw.html"},
+		GoodsDesImages:  []string{"https://www.tukuppt.com/muban/xpdejwgw.html"},
+		GoodsFrontImage: "https://www.tukuppt.com/muban/xpdejwgw.html",
+		IsNew:           false,
+		IsHot:           false,
+		OnSale:          false,
+		CategoryID:      7,
+		BrandID:         21,
+	})
+	if err != nil {
+		panic(any(err))
+	}
+
+	_, err = goodsClient.CreateGoods(context.Background(), &proto.CreateGoodsReq{
+		Name:            "商品9",
+		GoodsSn:         "123",
+		OriginPrice:     100,
+		SalePrice:       25.99,
+		GoodsDesc:       "我是描绘",
+		ShipFree:        false,
+		GoodsImages:     []string{"https://www.tukuppt.com/muban/xpdejwgw.html"},
+		GoodsDesImages:  []string{"https://www.tukuppt.com/muban/xpdejwgw.html"},
+		GoodsFrontImage: "https://www.tukuppt.com/muban/xpdejwgw.html",
+		IsNew:           false,
+		IsHot:           false,
+		OnSale:          false,
+		CategoryID:      9,
+		BrandID:         21,
+	})
+	if err != nil {
+		panic(any(err))
+	}
+
+	_, err = goodsClient.CreateGoods(context.Background(), &proto.CreateGoodsReq{
+		Name:            "商品10",
+		GoodsSn:         "123",
+		OriginPrice:     100,
+		SalePrice:       25.99,
+		GoodsDesc:       "我是描绘",
+		ShipFree:        false,
+		GoodsImages:     []string{"https://www.tukuppt.com/muban/xpdejwgw.html"},
+		GoodsDesImages:  []string{"https://www.tukuppt.com/muban/xpdejwgw.html"},
+		GoodsFrontImage: "https://www.tukuppt.com/muban/xpdejwgw.html",
+		IsNew:           false,
+		IsHot:           false,
+		OnSale:          false,
+		CategoryID:      10,
+		BrandID:         21,
+	})
+	if err != nil {
+		panic(any(err))
+	}
+}
+
+func TestGetGoodsPage() {
+	res, err := goodsClient.GetGoodsPage(context.Background(), &proto.GoodsPageReq{
+		//KeyWords: "商品",
+		//IsHot:    false,
+		//Brand:    21,
+		//PriceMax: 100,
+		//PriceMin: 50,
+		TopCategory: 4,
+		Pages:       1,
+		PageSize:    10,
+	})
+	if err != nil {
+		panic(any(err))
+	}
+	for _, goods := range res.Data {
+		fmt.Println(goods.Name)
+		if goods.Brand != nil {
+			fmt.Println(goods.Brand.Name)
+		}
+		if goods.Category != nil {
+			fmt.Println(goods.Category.Name)
+		}
+	}
+}
+
 func main() {
 	Init()
 	//TestCreateBrand()
 	//TestUpdateBrand()
 	//TestDeleteBrand()
 	//TestCreateCategory()
-	TestGetAllCategoryList()
+	//TestGetAllCategoryList()
+	//TestCreateGoods()
+	TestGetGoodsPage()
 	_ = conn.Close()
 }
